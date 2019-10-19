@@ -29,7 +29,7 @@ T = nx.random_powerlaw_tree(n, gamma=3, seed=None, tries=500)
 '''
 
 def seznam_sosedov(graf):
-    return[[i, list(graf.neighbors(i))] for i in T]
+    return[[i, list(graf.neighbors(i))] for i in graf]
 
 print(seznam_sosedov(T))
 slika = nx.draw(T)
