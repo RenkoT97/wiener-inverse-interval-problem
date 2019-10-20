@@ -2,6 +2,8 @@ import networkx as nx
 import numpy as np
 import matplotlib as mpl
 
+## Darjan: comment i) import matplotlib, ii) slika&mpl.pyplot pod seznamom sosedov
+
 n = 10
 
 #1. način
@@ -16,7 +18,7 @@ for drevo in drevesa_reda_n:
     sez.append(drevo)
 np.random.shuffle(sez)
 
-T = sez[0]
+T = sez[0]       #naključno drevo z n vozlišči
 
 '''
 2. način
@@ -29,7 +31,7 @@ T = nx.random_powerlaw_tree(n, gamma=3, seed=None, tries=500)
 '''
 
 def seznam_sosedov(graf):
-    return[[i, list(graf.neighbors(i))] for i in graf]
+    return[[i, list(graf.neighbors(i))] for i in graf]      # Vrne [["zap. št. vozlišča"], ["zap. št. vseh sosedov tega vozlišča"]]
 
 print(seznam_sosedov(T))
 slika = nx.draw(T)
@@ -38,7 +40,7 @@ mpl.pyplot.show()
 w = nx.wiener_index(T, weight=None)
 
 def listi(drevo):
-    return  [l[0] for l in seznam_sosedov(drevo) if len(l[1])==1]
+    return  [l[0] for l in seznam_sosedov(drevo) if len(l[1])==1]     # Če ima vozlišče samo 1 sosednje vozlišče (torej je list), zap. št. tega vozlišča dodamo med liste.
 
 listi = listi(T)
 
