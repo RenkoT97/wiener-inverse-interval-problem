@@ -1,6 +1,7 @@
 import networkx as nx
 import numpy as np
-import matplotlib as mpl
+import matplotlib as mpl  ## Darjan comment
+
 
 n = 10
 
@@ -27,6 +28,8 @@ for T in sez:
             v = nx.wiener_index(G, weight=None)
             if abs(w-v)==1:
                 novi.append(G)
+
+# "novi" je seznam dreves, ki ustrezajo kriteriju točke P2 (sprememba Wien. ind. za +- 1)
 
 if novi:
     di_novi = [nx.diameter(el) for el in novi]

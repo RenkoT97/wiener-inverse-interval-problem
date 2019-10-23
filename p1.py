@@ -49,8 +49,8 @@ listi = listi(T)
 M = []
 for v in T:
     H = T.copy()
-    H.add_node(n+1)
-    H.add_edge(v,n+1)
+    H.add_node(n+1)                              # Doda novo vozlišče, poimenovano "(n+1)"
+    H.add_edge(v,n+1)                            # Doda povezavo med vozliščem, ki je trenutno v zanki in (n+1)-tim.
     M.append(H)
 M_seznami = [seznam_sosedov(g) for g in M]
 
