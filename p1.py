@@ -1,67 +1,129 @@
 import networkx as nx
 import numpy as np
 import matplotlib as mpl
+import time
 
-## Darjan: comment i) import matplotlib, ii) slika&mpl.pyplot pod seznamom sosedov
+start_time = time.time()
 
-n = 10
-
-#1. način
+'''
+Še en način
 
 drevesa_reda_n = nx.nonisomorphic_trees(n, create='graph')
 
-#sez vsebuje vsa drevesa z n vozlišči
-#za naključno drevo premešamo sez (sicer bi bil sez[0] drevo z dvema vozliščema stopnje 1 ter n-2 vozlišči stopnje 2 itn.)
+sez vsebuje vsa drevesa z n vozlišči
+za naključno drevo premešamo sez (sicer bi bil sez[0] drevo z dvema vozliščema stopnje 1 ter n-2 vozlišči stopnje 2 itn.)
 
 sez = []
 for drevo in drevesa_reda_n:
     sez.append(drevo)
 np.random.shuffle(sez)
 
-T = sez[0]       #naključno drevo z n vozlišči
+drevesa = sez
+'''
+def naredi_drevesa(sez_st_vozlisc):
+    #argument je seznam, ki ima za elemente željena števila vozlišč grafov, ki jih bomo zgenerirali
+    sez = []
+    for i in range(len(sez_st_vozlisc)):
+        n = sez_st_vozlisc.pop()
+        try:
+            sez.append(nx.random_powerlaw_tree(n, gamma=3, seed=None, tries=100000))
+        except nx.exception.NetworkXError:
+            pass
+    return sez
+
+#Spremeni samo seznam, ki je argument funkcije naredi_drevesa
+drevesa = naredi_drevesa([i for i in range(3,5)])
+st = len(drevesa)
+
+def najkrajse_poti(graf):
+    return list(nx.all_pairs_shortest_path(graf))
+najkrajse_poti_v_drevesih = [najkrajse_poti(drevo) for drevo in drevesa]
+#seznam vsot poti iz posameznega vozlišča
+
+def seznam_vsot_poti(graf):
+    s = []
+    for sez_poti in najkrajse_poti_v_drevesih:
+        sez = []
+        for vozlisce_s_potmi in sez_poti:
+            vsota = sum(len(vozlisce_s_potmi[1][kljuc]) - 1 for kljuc in vozlisce_s_potmi[1])
+            sez.append(vsota)
+        s.append(sez)
+    return s
+vsote_poti = seznam_vsot_poti(drevesa)
+
+def wienerjev_index_s_potmi(grafi):
+    return [sum(vsote)/2 for vsote in grafi]
+wienerjev_index_s_potmi = wienerjev_index_s_potmi(vsote_poti)
 
 '''
-2. način
-
-hitrejši (?) način za pridobitev drevesa z n vozlišči
-slab, ker s številom vozlišč narašča število poskusov, ki jih potrebujemo, da dobimo drevo
-velikokrat dobim graf z n-2 vozlišči stopnje 2 (?)
-
-T = nx.random_powerlaw_tree(n, gamma=3, seed=None, tries=500)
+def wienerjev_index(drevesa):
+    return [nx.wiener_index(drevo, weight=None) for drevo in drevesa]
+wienerjevi_indeksi = wienerjev_index(drevesa)
 '''
-
-def seznam_sosedov(graf):
-    return[[i, list(graf.neighbors(i))] for i in graf]      # Vrne [["zap. št. vozlišča"], ["zap. št. vseh sosedov tega vozlišča"]]
-
-print(seznam_sosedov(T))
-slika = nx.draw(T)
-mpl.pyplot.show()
-
-w = nx.wiener_index(T, weight=None)
-
-def listi(drevo):
-    return  [l[0] for l in seznam_sosedov(drevo) if len(l[1])==1]     # Če ima vozlišče samo 1 sosednje vozlišče (torej je list), zap. št. tega vozlišča dodamo med liste.
-
-listi = listi(T)
 
 #M je množica vseh dreves z n+1 vozlišči, ki jih dobimo, če drevesu T dodamo list
 
-M = []
-for v in T:
-    H = T.copy()
-    H.add_node(n+1)                              # Doda novo vozlišče, poimenovano "(n+1)"
-    H.add_edge(v,n+1)                            # Doda povezavo med vozliščem, ki je trenutno v zanki in (n+1)-tim.
-    M.append(H)
-M_seznami = [seznam_sosedov(g) for g in M]
+def mnozica_dreves_z_dodanim_listom(drevesa):
+    sez = []
+    ind = []
+    i = 0
+    for drevo in drevesa:
+        M = []
+        I = []
+        n = nx.number_of_nodes(drevo)
+        osnovni_index = wienerjev_index_s_potmi[i]
+        i += 1
+        j = 0
+        for vozlisce in drevo:
+            T = drevo.copy()
+            T.add_node(n+1)
+            T.add_edge(vozlisce,n+1)
+            M.append(T)
+            poti_iz_vozlisca = vsote_poti[i-1][j]
+            index = osnovni_index + poti_iz_vozlisca + n
+            I.append(index)
+            j += 1
+        sez.append(M)
+        ind.append(I)
+    return [sez, ind]
+[nova_drevesa, indeksi_novih_dreves] = mnozica_dreves_z_dodanim_listom(drevesa)
 
-#wienerjevi indeksi dreves iz M
+'''
+def mnozica_dreves_z_dodanim_listom(drevesa):
+    sez = []
+    for drevo in drevesa:
+        M = []
+        n = nx.number_of_nodes(drevo)
+        for vozlisce in drevo:
+            T = drevo.copy()
+            T.add_node(n+1)
+            T.add_edge(vozlisce,n+1)
+            M.append(T)
+        sez.append(M)
+    return sez
+nova_dreves = mnozica_dreves_z_dodanim_listom(drevesa)
 
-w_M = [nx.wiener_index(T, weight = None) for T in M]
-mesto = np.argmin(w_M)
+wienerjevi indeksi dreves iz M
+def indeksi_novih_dreves(nova_drevesa):
+    return [[nx.wiener_index(T, weight = None) for T in M] for M in nova_drevesa]
+indeksi_novih_drevess = indeksi_novih_dreves(nova_drevesa)
+'''
+def mesta_dreves(indeksi_dreves):
+    return [np.argmin(s) for s in indeksi_dreves]
+    #argmin->argmax za drugi vidik
+mesta_dreves = mesta_dreves(indeksi_novih_dreves)
 
-#D je iskano drevo, torej tako iz množice M, da je njegov wienerjev indeks najmanjši
+def iskana_drevesa(mesta, drevesa):
+    D = []
+    for i in range(len(drevesa)):
+        sez = drevesa[i]
+        mesto = mesta[i]
+        D.append(sez[mesto])
+    return D
+#D so iskana drevesa, torej taka iz množice M, da je njihov wienerjev indeks najmanjši (največji)
+iskana_drevesa = iskana_drevesa(mesta_dreves, nova_drevesa)
 
-D = M[mesto]
+slika = nx.draw(drevesa[0],node_size=4)
+mpl.pyplot.show()
 
-
-        
+print("%s seconds" % (time.time() - start_time))
