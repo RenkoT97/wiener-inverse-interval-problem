@@ -6,19 +6,13 @@ import time
 start_time = time.time()
 
 '''
-Še en način
+Še en način: omejimo se na grafe z istim številom vozlišč
 
 drevesa_reda_n = nx.nonisomorphic_trees(n, create='graph')
 
-sez vsebuje vsa drevesa z n vozlišči
-za naključno drevo premešamo sez (sicer bi bil sez[0] drevo z dvema vozliščema stopnje 1 ter n-2 vozlišči stopnje 2 itn.)
-
-sez = []
+drevesa = []
 for drevo in drevesa_reda_n:
-    sez.append(drevo)
-np.random.shuffle(sez)
-
-drevesa = sez
+    drevesa.append(drevo)
 '''
 def naredi_drevesa(sez_st_vozlisc):
     #argument je seznam, ki ima za elemente željena števila vozlišč grafov, ki jih bomo zgenerirali
@@ -32,7 +26,7 @@ def naredi_drevesa(sez_st_vozlisc):
     return sez
 
 #Spremeni samo seznam, ki je argument funkcije naredi_drevesa
-drevesa = naredi_drevesa([i for i in range(3,5)])
+drevesa = naredi_drevesa([i for i in range(100, 150)])
 st = len(drevesa)
 
 def najkrajse_poti(graf):
@@ -101,12 +95,12 @@ def mnozica_dreves_z_dodanim_listom(drevesa):
             M.append(T)
         sez.append(M)
     return sez
-nova_dreves = mnozica_dreves_z_dodanim_listom(drevesa)
+nova_drevesa = mnozica_dreves_z_dodanim_listom(drevesa)
 
 wienerjevi indeksi dreves iz M
 def indeksi_novih_dreves(nova_drevesa):
     return [[nx.wiener_index(T, weight = None) for T in M] for M in nova_drevesa]
-indeksi_novih_drevess = indeksi_novih_dreves(nova_drevesa)
+indeksi_novih_dreves = indeksi_novih_dreves(nova_drevesa)
 '''
 def mesta_dreves(indeksi_dreves):
     return [np.argmin(s) for s in indeksi_dreves]
