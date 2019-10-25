@@ -14,6 +14,7 @@ drevesa = []
 for drevo in drevesa_reda_n:
     drevesa.append(drevo)
 '''
+
 def naredi_drevesa(sez_st_vozlisc):
     #argument je seznam, ki ima za elemente željena števila vozlišč grafov, ki jih bomo zgenerirali
     sez = []
