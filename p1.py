@@ -1,12 +1,34 @@
 import networkx as nx
 import numpy as np
 import matplotlib as mpl
+import random as rd
 import time
 
 start_time = time.time()
 
+def nakljucno_drevo(n):
+    sez = [i for i in range(n)]
+    rd.shuffle(sez)
+    g = nx.Graph()
+    g.add_nodes_from(sez)
+    sez2 = []
+    sez2.append(sez.pop())
+    while sez:
+        a = sez.pop()
+        b = rd.choice(sez2)
+        sez2.append(a)
+        g.add_edge(a, b)
+    return g
+
+def naredi_drevesa(sez_st_vozlisc):
+    #argument je seznam, ki ima za elemente željena števila vozlišč grafov, ki jih bomo zgenerirali
+    sez = []
+    for st_vozlisc in sez_st_vozlisc:
+        sez.append(nakljucno_drevo(st_vozlisc))
+    return sez
+    
 '''
-Še en način: omejimo se na grafe z istim številom vozlišč
+Dolg način: vsa drevesa z istim številom vozlišč
 
 drevesa_reda_n = nx.nonisomorphic_trees(n, create='graph')
 
@@ -14,6 +36,8 @@ drevesa = []
 for drevo in drevesa_reda_n:
     drevesa.append(drevo)
 '''
+'''
+Način z vgrajeno funkcijo za delanje dreves: dobivamo čudna drevesa
 
 def naredi_drevesa(sez_st_vozlisc):
     #argument je seznam, ki ima za elemente željena števila vozlišč grafov, ki jih bomo zgenerirali
@@ -25,9 +49,9 @@ def naredi_drevesa(sez_st_vozlisc):
         except nx.exception.NetworkXError:
             pass
     return sez
-
+'''
 #Spremeni samo seznam, ki je argument funkcije naredi_drevesa
-drevesa = naredi_drevesa([i for i in range(100, 150)])
+drevesa = naredi_drevesa([100])
 st = len(drevesa)
 
 def najkrajse_poti(graf):
