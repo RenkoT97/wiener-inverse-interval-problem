@@ -22,14 +22,15 @@ def nakljucno_drevo(n):
 
 def naredi_drevesa(sez_st_vozlisc):
     #argument je seznam, ki ima za elemente željena števila vozlišč grafov, ki jih bomo zgenerirali
+    #zaradi nadaljnih funkcij je smiselno vzeti drevesa z istim številom vozlišč: sicer je treba spremeniti
+    #funkcije od poisci_max_in_min naprej
     sez = []
     for st_vozlisc in sez_st_vozlisc:
         sez.append(nakljucno_drevo(st_vozlisc))
     return sez
 
 #Spremeni samo seznam, ki je argument funkcije naredi_drevesa
-drevesa = naredi_drevesa([100 for i in range(10)])
-st = len(drevesa)
+drevesa = naredi_drevesa([50 for i in range(10)])
 
 def najkrajse_poti(graf):
     return list(nx.all_pairs_shortest_path(graf))
@@ -54,26 +55,27 @@ wienerjev_index_s_potmi = wienerjev_index_s_potmi(vsote_poti)
 #M je množica vseh dreves z n+1 vozlišči, ki jih dobimo, če drevesu T dodamo list
 
 def mnozica_dreves_z_dodanim_listom(drevesa):
+    #če želimo videti nova drevesa, odkomentiramo dele z M
     sez = []
     ind = []
     i = 0
     for drevo in drevesa:
-        M = []
+        #M = []
         I = set()
         n = nx.number_of_nodes(drevo)
         osnovni_index = wienerjev_index_s_potmi[i]
         i += 1
         j = 0
         for vozlisce in drevo:
-            T = drevo.copy()
-            T.add_node(n+1)
-            T.add_edge(vozlisce,n+1)
-            M.append(T)
+            #T = drevo.copy()
+            #T.add_node(n+1)
+            #T.add_edge(vozlisce,n+1)
+            #M.append(T)
             poti_iz_vozlisca = vsote_poti[i-1][j]
             index = osnovni_index + poti_iz_vozlisca + n
             I.add(index)
             j += 1
-        sez.append(M)
+        #sez.append(M)
         ind.append(I)
     return sez, ind
 nova_drevesa, indeksi_novih_dreves = mnozica_dreves_z_dodanim_listom(drevesa)
@@ -85,8 +87,25 @@ moc_mnozic_indeksov_za_drevesa = moc_mnozic_indeksov_naddreves_dreves(indeksi_no
 print(moc_mnozic_indeksov_za_drevesa)
 
 def narisi(drevo):
-    slika = nx.draw(drevesa[0],node_size=4)
+    slika = nx.draw(drevo,node_size=4)
     mpl.pyplot.show()
     return None
+
+#smiselno, če gledamo drevesa na istem številu vozlišč: v nasprotnem primeru je treba to narediti na vsaki
+#skupini dreves z istim številom vozlišč posebej
+def poisci_max_in_min(moc_mnozic_indeksov_za_drevesa):
+    return(max(moc_mnozic_indeksov_za_drevesa), np.argmax(moc_mnozic_indeksov_za_drevesa)), (min(moc_mnozic_indeksov_za_drevesa), np.argmin(moc_mnozic_indeksov_za_drevesa))
+
+maxd, mind = poisci_max_in_min(moc_mnozic_indeksov_za_drevesa)
+
+maxdrevo = drevesa[maxd[1]]
+najkrajse_poti_maxdrevesa = najkrajse_poti_v_drevesih[maxd[0]]
+mindrevo = drevesa[mind[1]]
+najkrajse_poti_mindrevesa = najkrajse_poti_v_drevesih[mind[0]]
+
+def simulated_annealing(drevo):
+    pass
+    
+    
 
 print("%s seconds" % (time.time() - start_time))
