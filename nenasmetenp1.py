@@ -20,41 +20,39 @@ def nakljucno_drevo(n):
         g.add_edge(a, b)
     return g
 
-def naredi_drevesa(sez_st_vozlisc):
-    #argument je seznam, ki ima za elemente željena števila vozlišč grafov, ki jih bomo zgenerirali
-    #zaradi nadaljnih funkcij je smiselno vzeti drevesa z istim številom vozlišč: sicer je treba spremeniti
-    #funkcije od poisci_max_in_min naprej
+def naredi_drevesa(st_vozlisc, st_grafov):
     sez = []
-    for st_vozlisc in sez_st_vozlisc:
+    for i in range(st_grafov):
         sez.append(nakljucno_drevo(st_vozlisc))
     return sez
 
-#Spremeni samo seznam, ki je argument funkcije naredi_drevesa
-drevesa = naredi_drevesa([50 for i in range(10)])
+#Spremeni samo seznam, ki pove stevila vozlisc
+drevesa = naredi_drevesa(10,10)
 
 def najkrajse_poti(graf):
     return list(nx.all_pairs_shortest_path(graf))
-najkrajse_poti_v_drevesih = [najkrajse_poti(drevo) for drevo in drevesa]
 #seznam vsot poti iz posameznega vozlišča
 
-def seznam_vsot_poti(graf):
+def seznam_vsot_poti(drevesa):
     s = []
-    for sez_poti in najkrajse_poti_v_drevesih:
+    for sez_poti in [najkrajse_poti(drevo) for drevo in drevesa]:
         sez = []
         for vozlisce_s_potmi in sez_poti:
             vsota = sum(len(vozlisce_s_potmi[1][kljuc]) - 1 for kljuc in vozlisce_s_potmi[1])
             sez.append(vsota)
         s.append(sez)
     return s
+
 vsote_poti = seznam_vsot_poti(drevesa)
 
-def wienerjev_index_s_potmi(grafi):
-    return [sum(vsote)/2 for vsote in grafi]
-wienerjev_index_s_potmi = wienerjev_index_s_potmi(vsote_poti)
+def wienerjev_index_s_potmi(seznam_vsot_poti):
+    return [sum(vsote)/2 for vsote in seznam_vsot_poti]
+
+wienerjev_index = wienerjev_index_s_potmi(vsote_poti)
 
 #M je množica vseh dreves z n+1 vozlišči, ki jih dobimo, če drevesu T dodamo list
 
-def mnozica_dreves_z_dodanim_listom(drevesa):
+def mnozica_dreves_z_dodanim_listom(drevesa, vsote_poti, wienerjev_index):
     #če želimo videti nova drevesa, odkomentiramo dele z M
     sez = []
     ind = []
@@ -63,7 +61,7 @@ def mnozica_dreves_z_dodanim_listom(drevesa):
         #M = []
         I = set()
         n = nx.number_of_nodes(drevo)
-        osnovni_index = wienerjev_index_s_potmi[i]
+        osnovni_index = wienerjev_index[i]
         i += 1
         j = 0
         for vozlisce in drevo:
@@ -78,7 +76,7 @@ def mnozica_dreves_z_dodanim_listom(drevesa):
         #sez.append(M)
         ind.append(I)
     return sez, ind
-nova_drevesa, indeksi_novih_dreves = mnozica_dreves_z_dodanim_listom(drevesa)
+nova_drevesa, indeksi_novih_dreves = mnozica_dreves_z_dodanim_listom(drevesa, vsote_poti, wienerjev_index)
 
 def moc_mnozic_indeksov_naddreves_dreves(indeksi_poddreves):
     return [len(indeksi) for indeksi in indeksi_poddreves]
@@ -91,8 +89,7 @@ def narisi(drevo):
     mpl.pyplot.show()
     return None
 
-#smiselno, če gledamo drevesa na istem številu vozlišč: v nasprotnem primeru je treba to narediti na vsaki
-#skupini dreves z istim številom vozlišč posebej
+'''
 def poisci_max_in_min(moc_mnozic_indeksov_za_drevesa):
     return(max(moc_mnozic_indeksov_za_drevesa), np.argmax(moc_mnozic_indeksov_za_drevesa)), (min(moc_mnozic_indeksov_za_drevesa), np.argmin(moc_mnozic_indeksov_za_drevesa))
 
@@ -102,10 +99,44 @@ maxdrevo = drevesa[maxd[1]]
 najkrajse_poti_maxdrevesa = najkrajse_poti_v_drevesih[maxd[0]]
 mindrevo = drevesa[mind[1]]
 najkrajse_poti_mindrevesa = najkrajse_poti_v_drevesih[mind[0]]
+'''
 
-def simulated_annealing(drevo):
+def sosed(drevo):
+    G = drevo.copy()
+    
+    G.remove_node(lis)
+    G.add_node(lis)
+    G.add_edge(lis,vozlisce)
+    
+    novo_drevo = [drevo]
+    vs_poti = seznam_vsot_poti(novo_drevo)
+    w = wienerjev_index_s_potmi(vs_poti)
+    poddrevesa, indeksi_poddreves = mnozica_dreves_z_dodanim_listom(novo_drevo, vs_poti,w)
+    moc_mnozice = moc_mnozic_indeksov_naddreves_dreves(indeksi_poddreves)
+    return novo_drevo[0], moc_mnozice[0]
+
+def E(s):
     pass
     
-    
+def simulated_annealing(mesto_drevesa_v_seznamu_dreves):
+    stanje = moc_mnozic_indeksov_za_drevesa[mesto_drevesa_v_seznamu_dreves]
+    energija = E(s)
+    najboljse_stanje = stanje
+    najboljsa_energija = energija
+    drevo = drevesa[mesto_drevesa_v_seznamu_dreves]
+    k = 0
+    while k < kmax and e > emax:
+        temperatura = '?'
+        novo_drevo, novo_stanje = sosed(drevo)
+        nova_energija = E(novo_stanje)
+        if P(energija, nova_energija, temperatura > random():
+             stanje = novo_stanje, drevo = novo_drevo, najboljsa_energija = nova_energija
+        if nova_energija < najboljsa_energija:
+             najboljse_stanje = novo_stanje, najboljse_drevo = novo_drevo, najboljsa_energija = nova_energija
+             k += 1   
+    return najboljse_stanje, najboljse_drevo
 
+def genetski_algoritem(drevesa):
+    pass
+    
 print("%s seconds" % (time.time() - start_time))
