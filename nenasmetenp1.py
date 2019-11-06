@@ -30,7 +30,7 @@ def naredi_drevesa(st_vozlisc, st_grafov):
     return sez
 
 #Spremeni samo seznam, ki pove stevila vozlisc
-drevesa = naredi_drevesa(10,10)
+drevesa = naredi_drevesa(5,2)
 
 def najkrajse_poti(graf):
     return list(nx.all_pairs_shortest_path(graf))
@@ -97,6 +97,8 @@ def sosed(drevo):
     novo_drevo = drevo.copy()
     povezava = rd.choice(list(novo_drevo.edges))
     novo_drevo.remove_edge(povezava[0], povezava[1])
+    povezava = rd.choice(list(novo_drevo.edges))
+    novo_drevo.add_edge(povezava[0], povezava[1])
     while not nx.is_tree(novo_drevo):
         komponente = list(nx.connected_components(novo_drevo))
         i = rd.choice(list(komponente[0]))
