@@ -30,7 +30,7 @@ def naredi_drevesa(st_vozlisc, st_grafov):
     return sez
 
 #Spremeni samo seznam, ki pove stevila vozlisc
-drevesa = naredi_drevesa(5,2)
+drevesa = naredi_drevesa(17,10)
 
 def najkrajse_poti(graf):
     return list(nx.all_pairs_shortest_path(graf))
@@ -92,27 +92,28 @@ def narisi(drevo):
     mpl.pyplot.show()
     return None
 
+def seznam_sosedov(graf):
+    return[[i, list(graf.neighbors(i))] for i in graf]
+
+def listi(drevo):
+    return [l[0] for l in seznam_sosedov(drevo) if len(l[1])==1]
+
+def vozlisca(drevo):
+    return [i for i in drevo]
+
 def sosed(drevo):
-    # očitno zelo slaba funkcija za sosede : PREPOČASNA IN Z SLABO DEFINIRANO OKOLICO
     novo_drevo = drevo.copy()
-    povezava = rd.choice(list(novo_drevo.edges))
-    novo_drevo.remove_edge(povezava[0], povezava[1])
-    povezava = rd.choice(list(novo_drevo.edges))
-    novo_drevo.add_edge(povezava[0], povezava[1])
-    while not nx.is_tree(novo_drevo):
-        komponente = list(nx.connected_components(novo_drevo))
-        i = rd.choice(list(komponente[0]))
-        j = rd.choice(list(komponente[1]))
-        novo_drevo.add_edge(i,j)
-        povezava = rd.choice(list(novo_drevo.edges))
-        novo_drevo.remove_edge(povezava[0], povezava[1])
+    l = rd.choice(listi(novo_drevo))
+    vozlisce = rd.choice(vozlisca(drevo))
+    novo_drevo.remove_node(l)
+    novo_drevo.add_node(l)
+    novo_drevo.add_edge(l, vozlisce)
     novo_drevo = [novo_drevo]
     vs_poti = seznam_vsot_poti(novo_drevo)
     w = wienerjev_index_s_potmi(vs_poti)
     poddrevesa, indeksi_poddreves = mnozica_dreves_z_dodanim_listom(novo_drevo, vs_poti,w)
     moc_mnozice = moc_mnozic_indeksov_naddreves_dreves(indeksi_poddreves)
     return novo_drevo[0], moc_mnozice[0]
-
 
 def P(e,en,t):
     #po Kirkpatricku
@@ -121,7 +122,7 @@ def P(e,en,t):
     else:
         return math.e ** ((e - en) / t)
     
-def simulated_annealing(mesto_drevesa_v_seznamu_dreves, kmax = 3, emax = 1, zacetna_temperatura = 10):
+def simulated_annealing(mesto_drevesa_v_seznamu_dreves, kmax = 10, emax = 1, zacetna_temperatura = 100):
     #kmax največje število korakov, emax zadovoljiv rezultat
     stanje = drevesa[mesto_drevesa_v_seznamu_dreves]
     energija = moc_mnozic_indeksov_za_drevesa[mesto_drevesa_v_seznamu_dreves]
@@ -144,7 +145,7 @@ def optimum(drevesa, kmax = 3, emax = 1, zacetna_temperatura = 10):
     sez_optimumov = [simulated_annealing(i, kmax, emax, zacetna_temperatura) for i in range(len(drevesa))]
     print(sez_optimumov) #test
     sez_moci = [el[1] for el in sez_optimumov]
-    return sez_optimumov[np.argmax(sez_moci)]
+    return sez_optimumov[np.argmin(sez_moci)]
 
 optimalno_drevo, optimalna_moc_mnozice = optimum(drevesa)
 print(optimalna_moc_mnozice)
