@@ -9,15 +9,6 @@ def narisi(drevo):
 def mindrevolihalisod(n):
     return nx.star_graph(n-1)
 
-def mindrevosodg(n):
-    k = (n-2)//2
-    zvezda1 = nx.star_graph(k-1)
-    zvezda2 = nx.star_graph(k-1)
-    graf = nx.Graph()
-    graf.add_edges_from(zvezda1.edges())#zvezda2.edges())
-    graf.add_edges_from(zvezda2.edges())
-    return nx.disjoint_union(zvezda1, zvezda1)
-
 def mindrevosod(n):
     graf = nx.Graph()
     graf.add_nodes_from([i for i in range(n)])
