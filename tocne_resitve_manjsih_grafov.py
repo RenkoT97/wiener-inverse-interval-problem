@@ -1,12 +1,19 @@
 import p1_manjsi_grafi as mg
 import networkx as nx
 import json
+import matplotlib as mpl
+
+def slika(drevo, opt, i, wm):
+    nx.draw(drevo,node_size=4)
+    mpl.pyplot.savefig('drevo{}{}{}.png'.format(i,opt,wm), format = "PNG")
+    mpl.pyplot.close()
+    return None
 
 def seznam_sosedov(graf):
     return[[i, list(graf.neighbors(i))] for i in graf]
 
 def zapisi_resitve(n):
-    with open("p1-eksaktni.json", "w+", encoding = "utf-8") as dat:
+    with open("p1-eksaktni.json", "w", encoding = "utf-8") as dat:
         sez = []
         for i in range(2,n):
             import p1_manjsi_grafi
@@ -22,6 +29,8 @@ def zapisi_resitve(n):
             sezmin, najmanjsa_moc, sezmax, najvecja_moc  = mg.iskana_drevesa(mesta_dreves_max, mesta_dreves_min, drevesa, moci)
             smax = [seznam_sosedov(graf) for graf in sezmax]
             smin = [seznam_sosedov(graf) for graf in sezmin]
+            slika(sezmin[0], "min", i, najmanjsa_moc)
+            slika(sezmax[0], "max", i, najvecja_moc)
             podatki = {"n": i, "max": najvecja_moc, "min": najmanjsa_moc, "seznam dreves maksimuma": smax, "seznam dreves minimuma": smin}
             sez.append(podatki)
         json.dump(sez,dat)
@@ -35,6 +44,6 @@ def preberi_napisano():
         print(vsebina)
     return None
 
-preberi_napisano()
+#preberi_napisano()
 
      
