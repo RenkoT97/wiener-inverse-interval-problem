@@ -23,11 +23,6 @@ def nakljucno_drevo(n):
         g.add_edge(a, b)
     return g
 
-def narisi(drevo):
-    slika = nx.draw(drevo,node_size=4)
-    mpl.pyplot.show()
-    return None
-
 def prilagojeno_drevo(n):
     graf = nx.Graph()
     graf.add_nodes_from([i for i in range(n)])
@@ -41,9 +36,7 @@ def prilagojeno_drevo(n):
         b = rd.choice(sez2)
         sez2.append(a)
         graf.add_edge(a,b)
-    return graf
-
-narisi(prilagojeno_drevo(100))        
+    return graf       
 
 def naredi_drevesa(st_vozlisc, st_grafov):
     sez = []
@@ -162,6 +155,20 @@ def simulated_annealing(mesto_drevesa_v_seznamu_dreves, kmax, emax, zacetna_temp
              najboljsa_energija = nova_energija
         k += 1   
     return najboljse_stanje, najboljsa_energija
+
+def ozji_izbor_dreves(drevesa):
+    k = 4 * len(drevesa) // 5
+    while k > 0:
+        print(k)
+        k -= 1
+        print(moc_mnozic_indeksov_za_drevesa)
+        i = np.argmin(moc_mnozic_indeksov_za_drevesa)
+        del drevesa[i]
+        del moc_mnozic_indeksov_za_drevesa[i]
+    return drevesa, moc_mnozic_indeksov_za_drevesa
+
+drevesa, moc_mnozic_indeksov_za_drevesa = ozji_izbor_dreves(drevesa)
+print(drevesa)#test
 
 def maximum(drevesa, kmax = 10, emax = n, zacetna_temperatura = 100):
     sez_maximumov = [simulated_annealing(i, kmax, emax, zacetna_temperatura) for i in range(len(drevesa))]
