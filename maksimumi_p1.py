@@ -7,7 +7,7 @@ import math
 
 start_time = time.time()
 
-n = 100
+n = 300
 
 def nakljucno_drevo(n):
     sez = [i for i in range(n)]
@@ -26,7 +26,7 @@ def nakljucno_drevo(n):
 def prilagojeno_drevo(n):
     graf = nx.Graph()
     graf.add_nodes_from([i for i in range(n)])
-    st = rd.randint(n // 3, n // 2)
+    st = rd.randint(8 * n // 10, 95 * n // 100)
     nx.add_path(graf, [i for i in range(st)])
     sez = [i for i in range(st,n)]
     rd.shuffle(sez)
@@ -59,7 +59,7 @@ def seznam_vsot_poti(drevesa):
             vsota = sum(len(vozlisce_s_potmi[1][kljuc]) - 1 for kljuc in vozlisce_s_potmi[1])
             sez.append(vsota)
         s.append(sez)
-    return s
+    return s  
 
 vsote_poti = seznam_vsot_poti(drevesa)
 
@@ -159,9 +159,7 @@ def simulated_annealing(mesto_drevesa_v_seznamu_dreves, kmax, emax, zacetna_temp
 def ozji_izbor_dreves(drevesa):
     k = 4 * len(drevesa) // 5
     while k > 0:
-        print(k)
         k -= 1
-        print(moc_mnozic_indeksov_za_drevesa)
         i = np.argmin(moc_mnozic_indeksov_za_drevesa)
         del drevesa[i]
         del moc_mnozic_indeksov_za_drevesa[i]
