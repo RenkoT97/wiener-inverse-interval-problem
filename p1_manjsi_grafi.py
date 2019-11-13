@@ -65,17 +65,3 @@ def iskana_drevesa(mesta_dreves_max, mesta_dreves_min, drevesa, moci):
     for i in mesta_dreves_max:
         MAX.append(drevesa[i])
     return MIN, najmanjsa_moc, MAX, najvecja_moc
-
-'''
-n = 10
-drevesa_reda_n = nx.nonisomorphic_trees(n, create='graph')
-drevesa = [drevo for drevo in drevesa_reda_n]
-najkrajse_poti_v_drevesih = [najkrajse_poti(drevo) for drevo in drevesa]
-vsote_poti = seznam_vsot_poti(najkrajse_poti_v_drevesih)
-wienerjev_index_s_potmi = wienerjev_index_s_potmi(vsote_poti)
-nova_drevesa, indeksi_novih_dreves = mnozica_dreves_z_dodanim_listom(drevesa, vsote_poti, wienerjev_index_s_potmi)
-moci = moc_mnozic_indeksov_naddreves_dreves(indeksi_novih_dreves)
-mesta_dreves_min = mesta_dreves_min(moci)
-mesta_dreves_max = mesta_dreves_max(moci)
-iskana_drevesa = iskana_drevesa(mesta_dreves_max, mesta_dreves_min, drevesa, moci)
-'''

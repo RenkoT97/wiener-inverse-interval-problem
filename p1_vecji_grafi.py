@@ -2,12 +2,7 @@ import networkx as nx
 import numpy as np
 import matplotlib as mpl
 import random as rd
-import time
 import math
-
-start_time = time.time()
-
-n = 100
 
 def prilagojeno_drevo(n):
     graf = nx.Graph()
@@ -22,9 +17,7 @@ def prilagojeno_drevo(n):
         b = rd.choice(sez2)
         sez2.append(a)
         graf.add_edge(a,b)
-    return graf       
-
-graf = prilagojeno_drevo(n)
+    return graf
 
 def moc_mnozice_novih_indeksov(graf):
     n = len(graf)
@@ -38,8 +31,6 @@ def moc_mnozice_novih_indeksov(graf):
         I.add(int(nov_index))
     return len(I)
 
-moc_mnozice_novih_indeksov(graf)
-
 def narisi(drevo):
     slika = nx.draw(drevo,node_size=4)
     mpl.pyplot.show()
@@ -51,13 +42,12 @@ def seznam_sosedov(graf):
 def listi(drevo):
     return [l[0] for l in seznam_sosedov(drevo) if len(l[1]) == 1]
 
-def vozlisca(drevo):
-    return [i for i in drevo]
-
 def sosed(drevo):
     novo_drevo = drevo.copy()
     l = rd.choice(listi(novo_drevo))
-    vozlisce = rd.choice(vozlisca(drevo))
+    sez = list(drevo)
+    sez.remove(l)
+    vozlisce = rd.choice(sez)
     novo_drevo.remove_node(l)
     novo_drevo.add_node(l)
     novo_drevo.add_edge(l, vozlisce)
@@ -90,7 +80,7 @@ def simulated_annealing(drevo, kmax, emax, zacetna_temperatura = 100):
         k += 1   
     return najboljse_stanje, najboljsa_energija
 
-def ozji_izbor_dreves(st_vozlisc, st_dreves = 10):
+def ozji_izbor_dreves(n, st_dreves = 10):
     sez_dreves = [prilagojeno_drevo(n) for i in range(st_dreves)]
     moc_mnozic_indeksov_za_drevesa = [moc_mnozice_novih_indeksov(drevo) for drevo in sez_dreves]
     k = 4 * st_dreves // 5
@@ -101,20 +91,15 @@ def ozji_izbor_dreves(st_vozlisc, st_dreves = 10):
         del moc_mnozic_indeksov_za_drevesa[i]
     return sez_dreves, moc_mnozic_indeksov_za_drevesa
 
-drevesa, moc_mnozic_indeksov_za_drevesa = ozji_izbor_dreves(n, 10)
-print(drevesa)#test
-print(moc_mnozic_indeksov_za_drevesa)
-
-def maximum(drevesa, kmax = 10, emax = n, zacetna_temperatura = 100):
+def maximum(drevesa, kmax, emax, zacetna_temperatura = 100):
     sez_maximumov = [simulated_annealing(i, kmax, emax, zacetna_temperatura) for i in drevesa]
     print(sez_maximumov) #test
     sez_moci = [el[1] for el in sez_maximumov]
     print(sez_moci) #test
     return sez_maximumov[np.argmax(sez_moci)]
 
-max_drevo, max_moc_mnozice = maximum(drevesa)
-print(max_moc_mnozice)
-
-print("%s seconds" % (time.time() - start_time))
-
-narisi(max_drevo)
+def slika(drevo, i, wm):
+    nx.draw(drevo, node_size=4)
+    mpl.pyplot.savefig('drevo{}max{}.png'.format(i,wm), format = "PNG")
+    mpl.pyplot.close()
+    return None
