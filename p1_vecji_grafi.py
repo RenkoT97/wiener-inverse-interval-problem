@@ -80,10 +80,9 @@ def simulated_annealing(drevo, kmax, emax, zacetna_temperatura = 100):
         k += 1   
     return najboljse_stanje, najboljsa_energija
 
-def ozji_izbor_dreves(n, st_dreves = 10):
+def ozji_izbor_dreves(n, k, st_dreves):
     sez_dreves = [prilagojeno_drevo(n) for i in range(st_dreves)]
     moc_mnozic_indeksov_za_drevesa = [moc_mnozice_novih_indeksov(drevo) for drevo in sez_dreves]
-    k = 4 * st_dreves // 5
     while k > 0:
         k -= 1
         i = np.argmin(moc_mnozic_indeksov_za_drevesa)
