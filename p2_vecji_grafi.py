@@ -60,13 +60,19 @@ def iskanje(k, n):
         j += 1
         nov = graf.copy()
         lis = rd.choice(listi(graf))
+        potilis = nx.shortest_path(graf, source = lis)
+        vsotalis = sum([(len(potilis[kljuc])-1) for kljuc in potilis])
         vozlisca = list(graf)
         vozlisca.remove(lis)
         v = rd.choice(vozlisca)
+        potiv = nx.shortest_path(graf, source = v)
+        vsotav = sum([len(potiv[kljuc]) - 1 for kljuc in potiv])
+        vlis = nx.shortest_path(graf, source = v, target = lis)
+        dolzinavlis = len(vlis) - 1
         nov.remove_node(lis)
         nov.add_node(lis)
         nov.add_edge(lis,v)
-        w_nov = nx.wiener_index(nov)
+        w_nov = w_star - 1 + vsotav - vsotalis + n - dolzinavlis
         if abs(w_nov - w_star) == 1:
             print(w_nov, w_star)
             return slika(graf, len(graf), nx.diameter(graf))
@@ -75,6 +81,6 @@ def iskanje(k, n):
     print("Ne najdem grafa.")
     return None
 
-iskanje(500, 200)
+iskanje(700, 500)
 
 print("%s seconds" % (time.time() - start_time))

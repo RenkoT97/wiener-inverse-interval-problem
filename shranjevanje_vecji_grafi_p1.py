@@ -14,6 +14,6 @@ def shrani_resitve(velikosti_grafov, kmax, st_dreves_za_odstranitev, st_dreves_z
         print(max_moc_mnozice)
     return None
 
-shrani_resitve([50], 50, 8, 10)
+shrani_resitve([100], 2, 8, 10)
 
 print("%s seconds" % (time.time() - start_time))

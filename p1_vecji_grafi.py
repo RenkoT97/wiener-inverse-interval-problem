@@ -26,7 +26,7 @@ def moc_mnozice_novih_indeksov(graf):
     I = set()
     for i in range(n):
         vozlisce, slovar_poti = next(najkrajse_poti)
-        vsota_poti_iz_vozlisca = sum(len(slovar_poti[kljuc]) for kljuc in slovar_poti)
+        vsota_poti_iz_vozlisca = sum(len(slovar_poti[kljuc]) for kljuc in slovar_poti) - n
         nov_index = osnovni_index + vsota_poti_iz_vozlisca + n
         I.add(int(nov_index))
     return len(I)
