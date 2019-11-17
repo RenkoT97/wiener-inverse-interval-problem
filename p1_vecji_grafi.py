@@ -61,7 +61,7 @@ def P(e,en,t):
     else:
         return math.e ** ((e - en) / t)
     
-def simulated_annealing(drevo, kmax, emax, zacetna_temperatura = 100):
+def simulirano_ohlajanje(drevo, kmax, emax, zacetna_temperatura = 100):
     #kmax največje število korakov, emax zadovoljiv rezultat
     stanje = drevo
     energija = moc_mnozice_novih_indeksov(drevo)
@@ -91,7 +91,7 @@ def ozji_izbor_dreves(n, k, st_dreves):
     return sez_dreves, moc_mnozic_indeksov_za_drevesa
 
 def maximum(drevesa, kmax, emax, zacetna_temperatura = 100):
-    sez_maximumov = [simulated_annealing(i, kmax, emax, zacetna_temperatura) for i in drevesa]
+    sez_maximumov = [simulirano_ohlajanje(i, kmax, emax, zacetna_temperatura) for i in drevesa]
     print(sez_maximumov) #test
     sez_moci = [el[1] for el in sez_maximumov]
     print(sez_moci) #test
