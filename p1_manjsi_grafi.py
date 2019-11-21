@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-import matplotlib as mpl
+#import matplotlib as mpl
 import random as rd
 
 def najkrajse_poti(graf):

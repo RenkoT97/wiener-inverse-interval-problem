@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-import matplotlib as mpl
+#import matplotlib as mpl
 import time
 
 start_time = time.time()
@@ -44,9 +44,9 @@ def poisci_drevo_z_najvecjim_premerom(drevesa):
         return None
 
 def slika(drevo, i, diam):
-    nx.draw(drevo,node_size=4)
-    mpl.pyplot.savefig('drevo{}diam{}.png'.format(i, diam), format = "PNG")
-    mpl.pyplot.close()
+    #nx.draw(drevo,node_size=4)
+    #mpl.pyplot.savefig('drevo{}diam{}.png'.format(i, diam), format = "PNG")
+    #mpl.pyplot.close()
     return None
 
 sez = vsa_izomorfna_drevesa(n)

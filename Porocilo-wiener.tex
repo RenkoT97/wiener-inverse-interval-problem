@@ -14,7 +14,13 @@
 %\usepackage{mathtools}
 \usepackage{mathrsfs}
 
+
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
+\graphicspath{ {/slike/} }
+
 \pagenumbering{arabic}
+
 
 \begin{document}
 
@@ -50,6 +56,10 @@ Avtorja: \\
 
 \tableofcontents
 
+\vspace{1cm}
+
+\listoffigures
+
 \pagebreak
 
 \section{Predstavitev problema}
@@ -75,11 +85,47 @@ Za izvedbo naloge sva se odločila za programski jezik \textit{Python}, za lažj
 
 \subsection{Reševanje}
 
+Za manjše grafe, kjer je možno eksaktno računanje, sva napisala funkcijo za generiranje vseh izomorfnih dreves na $n$ vozliščih ter funkcije, ki najprej iz vseh poberejo tista z iskano lastnostjo, to je spremembo Wienerjevega indeksa za 1 ob odstranitvi ene in dodajanju nove povezave kot v opisu problema, nato pa izmed teh vrne tisto drevo z največjim premerom, če tako sploh obstaja. To je točna rešitev problema, a je časovno zahtevna ne le generacija grafov, temveč tudi računanje premera. Zato sva za večje $n$ napisala novo kodo.
+
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=7cm]{drevo6diam4.png}
+  \caption{Primer točne rešitve za $n$ = 6, premer = 6}
+  \label{fig:graf1} 
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=7cm]{drevo14diam12.png}
+  \caption{Primer točne rešitve za $n$ = 14, premer = 12}
+  \label{fig:graf1}
+\end{figure}
+
+
+
+
+
+
+\vspace{1cm}
+
+\textit{Tukaj pride opis kode za večje $n$ in kode za shranjevanje?}
+
+\vspace{1cm}
+
+\itshape{ Načrt zdaj je pomikati se po množici ustreznih grafov tako, da najprej narediva par poljubnih dreves na $n$ vozliščih s premerom $n - 2$ in lastnost preveriva za njih, nato vzameva premer $n - 3$ in tako dalje, morda pa tudi na vsakem izmed teh dreves izvesti kakšno metahevristiko ali kaj podobnega. Skrbi naju, da po takšnem postopku dolgo časa sploh ne bi našla grafa z željeno lastnostjo, zato bova morala dobro določiti število izbranih grafov za primerjanje in mogoče zbrati drugačne načine za iskanje.}
+
 \subsection{Rezultati in povzetek}
+
 
 \pagebreak
 
 \section{Problem P2}
+
+
+
+
+
 
 \subsection{Reševanje}
 
@@ -112,7 +158,7 @@ Za časovno optimalno računanje Wienerjevih indeksov sva najprej shranila dolž
 Po končanem algoritmu \textit{simulated annealing} je bilo treba samo še preveriti najboljšega izmed vseh rezultatov, ki jih je podala omenjena metahevristika. Razmišljala sva, da bi na začetku generirala večje število grafov in zadnji algoritem izvedla le na tistih, ki dajejo boljše rezultate, kar bi bilo hitreje. To bo dobro natanko takrat, ko bodo imeli sosednji grafi podobno moč množice $W(\mathscr{T}_{n+1})$, torej želiva to doseči pri novem definiranju sosedov. Poskusila bova z menjavo povezave pri listih, tako kot je to opisano v problemu P2. Nameravava poskusiti tudi na drugačen način, in sicer razmišljava o implementaciji genetskega algoritma. Za to morava razmisliti, kako primerno križati ali kako drugače modificirati ugodni drevesi. Ko bova optimizirala postopke in dobila zadostno število iskanih dreves, se bova morala spomniti še, kako jih primerjati. Za prvih par naravnih števil nameravava tudi preveriti točno rešitev.
 
 \subsection{P2}
-Napisala sva funkcijo za generiranje vseh izomorfnih dreves na $n$ vozliščih ter funkcije, ki najprej iz vseh grafov poberejo tiste z iskano lastnostjo, nato pa izmed teh tistega z največjim premerom, če kak tak graf sploh obstaja. To je točna rešitev problema, a je časovno zahtevna ne le generacija grafov, temveč tudi računanje premera. Načrt zdaj je pomikati se po množici ustreznih grafov tako, da najprej narediva par poljubnih dreves na $n$ vozliščih s premerom $n - 2$ in lastnost preveriva za njih, nato vzameva premer $n - 3$ in tako dalje, morda pa tudi na vsakem izmed teh dreves izvesti kakšno metahevristiko ali kaj podobnega. Skrbi naju, da po takšnem postopku dolgo časa sploh ne bi našla grafa z željeno lastnostjo, zato bova morala dobro določiti število izbranih grafov za primerjanje in mogoče zbrati drugačne načine za iskanje.
+
 
 \subsection{Zaključek}
 
