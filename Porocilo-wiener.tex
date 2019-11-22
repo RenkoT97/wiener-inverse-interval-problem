@@ -103,18 +103,30 @@ V eksaktni kodi najprej dobimo generirane najkrajše poti v drevesu in seznam vs
 
 \textit{Časovna zahtevnost - izračunana}
 
-Časovno zahtevnost kode s simuliranim ohlajanjem sva preverila tudi eksperimentalno za nekaj različnih vrednosti $n$.
+\vspace{1cm}
+
+Časovno zahtevnost kode s simuliranim ohlajanjem sva preverila tudi eksperimentalno za nekaj različnih vrednosti $n$ (pri parametrih št. grafov = 1, kmax = 20, št. dreves za odstanitev = 48, št. dreves za izbiro = 50):
 
 \begin{figure}[H]
 \centering
-  \includegraphics[width=7cm]{p1_casovna_slika.png}
-  \caption{Časovna zahtevnost glede na eksperimente pri P1}
-  \label{fig:p1_časovna_zaht} 
+  \includegraphics[width=12cm]{casovna_p1_n.png}
+  \caption{Časovna zahtevnost glede na eksperimente pri P1 glede na $n$}
+  \label{fig:p1_časovna_zaht_n} 
 \end{figure}
 
 
 \vspace{1cm}
 
+Pri fiksnem številu vozlišč na 100, pa je časovna odvisnost glede na kmax linearna:
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=12cm]{casovna_p1_kmax.png}
+  \caption{Časovna zahtevnost glede na eksperimente pri P1 glede na kmax}
+  \label{fig:p1_časovna_zaht_kmax} 
+\end{figure}
+
+\vspace{1cm}
 
 
 
@@ -150,6 +162,28 @@ Primera dveh dreves, ki sva jih dobila z eksaktnim računanjem.}
   \includegraphics[width=7cm]{drevo14diam12.png}
   \caption{Primer točne rešitve za $n$ = 14, premer = 12}
   \label{fig:graf1}
+\end{figure}
+
+\vspace{1cm}
+
+Časovna zahtevnost pri spreminjajočem se številu vozlišč $n$ pri 1.000.000 korakih:
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=12cm]{casovna_p2_n.png}
+  \caption{Časovna zahtevnost glede na eksperimente pri P2 glede na $n$}
+  \label{fig:p2_časovna_zaht_n} 
+\end{figure}
+
+\vspace{1cm}
+
+Še časovna zahtevnost pri fiksnem $n = 200$ in različnem številu korakov ohlajanja:
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=12cm]{casovna_p2_korak.png}
+  \caption{Časovna zahtevnost glede na eksperimente pri P2 glede na št. korakov ohlajanja}
+  \label{fig:p2_časovna_zaht_korak} 
 \end{figure}
 
 
