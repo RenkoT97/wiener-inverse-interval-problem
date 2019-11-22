@@ -1,5 +1,8 @@
 import p1_manjsi_grafi as mg
 import json
+import networkx as nx
+import matplotlib as mpl
+
 
 def slika(drevo, opt, i, wm):
     nx.draw(drevo,node_size=4)

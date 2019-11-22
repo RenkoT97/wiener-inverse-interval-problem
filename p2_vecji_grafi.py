@@ -60,6 +60,7 @@ def iskanje(k, n):
     print("Ne najdem grafa.")
     return None
 
-iskanje(1000000, 700)
+
+iskanje(1000000, 400)
 
 print("%s seconds" % (time.time() - start_time))
