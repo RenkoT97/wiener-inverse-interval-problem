@@ -17,7 +17,7 @@
 
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
-\graphicspath{ {/slike/} }
+%\graphicspath{ {/slike/} }
 
 \pagenumbering{arabic}
 
@@ -85,8 +85,58 @@ Za izvedbo naloge sva se odločila za programski jezik \textit{Python}, za lažj
 
 \subsection{Reševanje}
 
-Za manjše grafe, kjer je možno eksaktno računanje, sva napisala funkcijo za generiranje vseh izomorfnih dreves na $n$ vozliščih ter funkcije, ki najprej iz vseh poberejo tista z iskano lastnostjo, to je spremembo Wienerjevega indeksa za 1 ob odstranitvi ene in dodajanju nove povezave kot v opisu problema, nato pa izmed teh vrne tisto drevo z največjim premerom, če tako sploh obstaja. To je točna rešitev problema, a je časovno zahtevna ne le generacija grafov, temveč tudi računanje premera. Zato sva za večje $n$ napisala novo kodo.
+Zaradi velike časovne zahtevnosti sva kodo ločila na eksaktno, ki je uporabna za majhne $n$ in drugo, kjer si pomagamo s tako imenovanim \textit{simuliranim ohlajanjem}.
+\vspace{0.5cm}
 
+V eksaktni kodi najprej dobimo generirane najkrajše poti v drevesu in seznam vsot najkrajših poti ter poračunane Wienerjeve indekse. Nato iz dreves velikosti $n$ generiramo množico dreves z dodanim listom, vrednosti njihovih Wienerjih indeksov pa shranjujemo v seznam. 
+
+\textit{ne vem, kako deluje}
+
+%Na koncu ustvarimo 2 prazna seznama, v enega shranjujemo drevesa, ki so vrnila maksimalno, v drugega pa tista, ki so vrnila %maksimalno vrednosti moči množic Wienerjevega indeksa, kar nas je pri tem problemu zanimalo.
+
+%vsa drevesa z enim vozliščem več (dodan list)
+%iščemo drevo z n vozlišči, da bo za n+1 najmanj/največ različnih možnih vrednosti wienerjevega indeksa
+
+\textit{Opis kode s simuliranih ohlajanjem}
+
+\vspace{1cm}
+
+\textit{Časovna zahtevnost - izračunana}
+
+Časovno zahtevnost kode s simuliranim ohlajanjem sva preverila tudi eksperimentalno za nekaj različnih vrednosti $n$.
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=7cm]{p1_casovna_slika.png}
+  \caption{Časovna zahtevnost glede na eksperimente pri P1}
+  \label{fig:p1_časovna_zaht} 
+\end{figure}
+
+
+\vspace{1cm}
+
+
+
+
+\itshape{ Načrt zdaj je pomikati se po množici ustreznih grafov tako, da najprej narediva par poljubnih dreves na $n$ vozliščih s premerom $n - 2$ in lastnost preveriva za njih, nato vzameva premer $n - 3$ in tako dalje, morda pa tudi na vsakem izmed teh dreves izvesti kakšno metahevristiko ali kaj podobnega. Skrbi naju, da po takšnem postopku dolgo časa sploh ne bi našla grafa z željeno lastnostjo, zato bova morala dobro določiti število izbranih grafov za primerjanje in mogoče zbrati drugačne načine za iskanje.
+}
+
+\subsection{Rezultati in povzetek}
+
+
+\pagebreak
+
+\section{Problem P2}
+
+\subsection{Reševanje}
+
+\normalfont{Za manjše grafe, kjer je možno eksaktno računanje, sva napisala funkcijo za generiranje vseh izomorfnih dreves na $n$ vozliščih ter funkcije, ki najprej iz vseh poberejo tista z iskano lastnostjo, to je spremembo Wienerjevega indeksa za 1 ob odstranitvi ene in dodajanju nove povezave kot v opisu problema, nato pa izmed teh vrne tisto drevo z največjim premerom, če tako sploh obstaja. To je točna rešitev problema, a je časovno zahtevna ne le generacija grafov, temveč tudi računanje premera. Zato sva za večje $n$ tudi tukaj napisala novo kodo.
+
+
+
+
+
+Primera dveh dreves, ki sva jih dobila z eksaktnim računanjem.}
 
 \begin{figure}[H]
 \centering
@@ -103,31 +153,6 @@ Za manjše grafe, kjer je možno eksaktno računanje, sva napisala funkcijo za g
 \end{figure}
 
 
-
-
-
-
-\vspace{1cm}
-
-\textit{Tukaj pride opis kode za večje $n$ in kode za shranjevanje?}
-
-\vspace{1cm}
-
-\itshape{ Načrt zdaj je pomikati se po množici ustreznih grafov tako, da najprej narediva par poljubnih dreves na $n$ vozliščih s premerom $n - 2$ in lastnost preveriva za njih, nato vzameva premer $n - 3$ in tako dalje, morda pa tudi na vsakem izmed teh dreves izvesti kakšno metahevristiko ali kaj podobnega. Skrbi naju, da po takšnem postopku dolgo časa sploh ne bi našla grafa z željeno lastnostjo, zato bova morala dobro določiti število izbranih grafov za primerjanje in mogoče zbrati drugačne načine za iskanje.}
-
-\subsection{Rezultati in povzetek}
-
-
-\pagebreak
-
-\section{Problem P2}
-
-
-
-
-
-
-\subsection{Reševanje}
 
 \subsection{Rezultati in povzetek}
 
