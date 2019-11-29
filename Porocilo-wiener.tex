@@ -5,11 +5,13 @@
 \usepackage{lmodern}
 \usepackage{mathrsfs}
 \usepackage{subfig}
-
-
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
-%\graphicspath{ {/slike/} }
+
+
+%\graphicspath{{.\wiener-inverse-interval-problem\slike\Porocilo}}
+
+
 
 \pagenumbering{arabic}
 
@@ -80,9 +82,9 @@ Za izvedbo naloge sva se odločila za programski jezik \textit{Python}, za lažj
 Zaradi velike časovne zahtevnosti sva problem ločila na eno kodo, ki išče točno rešitev in je uporabna za grafe z majhnim številom vozlišč, ter drugo, časovno in prostorsko bolj optimalno, ki si prizadeva najti dober približek točne rešitve za večje grafe.
 \vspace{0.5cm}
 
-Glavni del kode za iskanje točnih rešitev se nahaja v datoteki \textit{p1\_manjsi\_grafi.py}. Tam so definirane funkcije za iskanje Wienerjevega indeksa s pomočjo najkrajših poti med posameznima točkama drevesa, generiranje množice $\mathscr{T}_{n+1}$  z računanjem indeksov glede na indeks prvotnega drevesa ter iskanje optimumov. \\
+Glavni del kode za iskanje točnih rešitev se nahaja v datoteki z imenom \textit{p1\_manjsi\_grafi.py}. Tam so definirane funkcije za iskanje Wienerjevega indeksa s pomočjo najkrajših poti med posameznima točkama drevesa, generiranje množice $\mathscr{T}_{n+1}$  z računanjem indeksov glede na indeks prvotnega drevesa ter iskanje optimumov. \\
 
-Rešitev iščemo tako, da poženemo datoteko \textit{shranjevanje\_manjsi\_grafi\_p1.py} ter v funkciji \textit{zapisi\_resitve} nastavimo za argument željeno število vozlišč drevesa, do katerega želimo imeti rezultate. Za število vozlišč $n$ ne priporočava izbire števila, večjega od 17. Pri $n$ = 20 že dobimo opozorilo \textit{"memory error"}, ki bi se sicer dal odpraviti, a to nima smisla, saj nam bo prilagojen algoritem za tako majhne grafe ob pravilni izbiri parametrov zelo verjetno dal točno rešitev mnogo hitreje.
+Rešitev iščemo tako, da poženemo \textit{shranjevanje\_manjsi\_grafi\_p1.py} ter v funkciji \textit{zapisi\_resitve} nastavimo za argument željeno število vozlišč drevesa, do katerega želimo imeti rezultate. Za število vozlišč $n$ ne priporočava izbire števila, večjega od 17. Pri $n$ = 20 že dobimo opozorilo \textit{"memory error"}, ki bi se sicer dal odpraviti, a to nima smisla, saj nam bo prilagojen algoritem za tako majhne grafe ob pravilni izbiri parametrov zelo verjetno dal točno rešitev mnogo hitreje.
 \vspace{0.5cm}
 
 \begin{figure}[H]
@@ -96,7 +98,7 @@ Rešitev iščemo tako, da poženemo datoteko \textit{shranjevanje\_manjsi\_graf
 
 \pagebreak
 
-Glavni del kode za iskanje približkov na velikih grafih pa se nahaja v datoteki \textit{p1\_vecji\_grafi.py}, koda se požene iz datoteke \textit{shranjevanje\_vecji\_grafi\_p1.py}, tako da v funkciji \textit{shrani\_resitve} za argumente nastavimo seznam s števili, ki predstavljajo velikost grafov, za katere želimo rezultate; število korakov izvedbe \textit{simuliranega ohlajanja} za vsak graf; število dreves za odstranitev iz prvotnega seznama ter število dreves z istim številom vozlišč za prvotni seznam, iz katerega bomo naredili prej omenjeni ožji izbor za ohlajanje.\\
+Glavni del kode za iskanje približkov na velikih grafih pa se nahaja v datoteki z imenom \textit{p1\_vecji\_grafi.py}, koda se požene iz datoteke \textit{shranjevanje\_vecji\_grafi\_p1.py}, tako da v funkciji \textit{shrani\_resitve} za argumente nastavimo seznam s števili, ki predstavljajo velikost grafov, za katere želimo rezultate; število korakov izvedbe \textit{simuliranega ohlajanja} za vsak graf; število dreves za odstranitev iz prvotnega seznama ter število dreves z istim številom vozlišč za prvotni seznam, iz katerega bomo naredili prej omenjeni ožji izbor za ohlajanje.\\
 
 Za začetek reševanja tega problema sva potrebovala ustrezne grafe. Ker naključna drevesa navadno ne bodo dovolj dobra, sva generirala nekaj boljših s pomočjo modificiranega \textit{Kruskalovega algoritma} tako, da sva vzela pot velikosti nekje med 80 in 95\% števila vseh vozlišč in nato naključno dodajala povezave na pot tako, da je nastalo povezano drevo, kar se je izkazalo za zelo učinkovito.\\
 
@@ -121,7 +123,7 @@ Sosednji graf za algoritem sva ustvarila tako, da sva od prejšnjega odstranila 
 \begin{figure}[H]
 \centering
   \includegraphics[width=9cm]{casovna_p1_n.png}
-  \caption{Časovna zahtevnost glede na različno število vozlišč $n$}
+  \caption{Časovna zahtevnost glede na različno število vozlišč}
   \label{fig:p1_časovna_zaht_n} 
 \end{figure}
 
@@ -172,20 +174,20 @@ Tudi tukaj sva eksperimentalno preverila časovno zahtevnost kode pri različnih
 \begin{figure}[H]
 \centering
   \includegraphics[width=9cm]{casovna_p2_n.png}
-  \caption{Časovna zahtevnost glede na število vozlišč $n$}
+  \caption{Časovna zahtevnost glede na število vozlišč}
   \label{fig:p2_časovna_zaht_n} 
 \end{figure}
 
 \pagebreak
 
-Še časovna zahtevnost pri fiksnem številu vozlišč $n = 200$ in $n$ = 6000 ter različnem številu korakov algoritma:
+Še časovna zahtevnost pri fiksnem številu vozlišč $n = 200$ in $n$ = 6000 ter različnem številu korakov algoritma (koraki so izraženi v tisoč):
 
 \begin{figure}[H]
     \centering
     \subfloat[Število vozlišč $n$ = 200, program najde ustrezno drevo]{{\includegraphics[width=6cm]{casovna_p2_korak.png} }}
     \qquad
     \subfloat[Število vozlišč $n$ = 6000, program ne najde ustreznega drevesa]{{\includegraphics[width=6cm]{casovna_p2_korak_6000vozl.png} }}
-    \caption{Časovna zahtevnost glede na število korakov algoritma v tisoč}
+    \caption{Časovna zahtevnost glede na število korakov algoritma}
     \label{p2korak}
 \end{figure}
 
