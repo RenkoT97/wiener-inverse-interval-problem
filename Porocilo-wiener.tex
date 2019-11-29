@@ -88,7 +88,7 @@ Za izvedbo naloge sva se odločila za programski jezik \textit{Python}, za lažj
 Zaradi velike časovne zahtevnosti sva problem ločila na kodo, ki išče točno rešitev in je uporabna za grafe z majhnim številom vozlišč, ter časovno in prostorsko bolj optimalno, ki si prizadeva najti dober približek točne rešitve za večje grafe.
 \vspace{0.5cm}
 
-Glavni del kode za iskanje točnih rešitev se nahaja v datoteki $p1\_manjsi\_grafi.py$. Tam so definirane funkcije za iskanje wienerjevega indeksa s pomočjo najkrajših poti med posameznima točkama drevesa, generiranje množice $\mathscr{T}_{n+1}$  z računanjem indeksov glede na indeks prvotnega drevesa ter iskanje optimumov. Rešitev pa iščemo tako, da poženemo datoteko $shranjevanje\_manjsi\_grafi\_p1.py$ ter v funkciji $zapisi\_resitve$ nastavimo za argument željeno število vozlišč drevesa, do katerega želimo imeti rezultate. Ne priporočava za n izbrati števila, večjega od 17. Pri 20 že dobimo memory error, ki bi se sicer dal odpraviti, a to nima smisla, saj nam bo algoritem za tako majhne grafe ob pravilni izbiri parametrov zelo verjetno dal točno rešitev mnogo hitreje.
+Glavni del kode za iskanje točnih rešitev se nahaja v datoteki $p1\_manjsi\_grafi.py$. Tam so definirane funkcije za iskanje wienerjevega indeksa s pomočjo najkrajših poti med posameznima točkama drevesa, generiranje množice $\mathscr{T}_{n+1}$  z računanjem indeksov glede na indeks prvotnega drevesa ter iskanje optimumov. Rešitev pa iščemo tako, da poženemo datoteko $shranjevanje\_manjsi\_grafi\_p1.py$ ter v funkciji $zapisi\_resitve$ nastavimo za argument željeno število vozlišč drevesa, do katerega želimo imeti rezultate. Ne priporočava za n izbrati števila, večjega od 17. Pri 20 že dobimo memory error, ki bi se sicer dal odpraviti, a to nima smisla, saj nam bo prilagojen algoritem za tako majhne grafe ob pravilni izbiri parametrov zelo verjetno dal točno rešitev mnogo hitreje.
 \vspace{0.5cm}
 
 Glavni del kode za iskanje približkov na velikih grafih se nahaja v datoteki $p1\_vecji\_grafi.py$, koda pa se požene iz datoteke $shranjevanje\_vecji\_grafi\_p1.py$, tako da v funkciji $shrani\_resitve$ za argumente nastavimo seznam s števili, ki predstavljajo velikosti grafov, za katere želimo rezultate, število korakov izvedbe simuliranega ohlajanja za vsak graf, število dreves za odstranitev iz prvotnega seznama ter število dreves z istim številom vozlišč za prvotni seznam, iz katerega bomo naredili prej omenjeni ožji izbor za ohlajanje.
@@ -100,7 +100,7 @@ Za začetek reševanja tega problema sva potrebovala ustrezne grafe. Ker naklju�
 Za časovno optimalno računanje Wienerjevih indeksov sva najprej shranila dolžine najkrajših poti med vsakima točkama grafa. Tako sva potem lahko izračunala indeks vsakega posameznega novega drevesa v linearnem času; potrebovala sva namreč le vsoto poti iz vozlišča, ki sva mu dodala list, vsoto vseh poti ter število vozlišč; vse te podatke pa sva že imela.
 \vspace{0.5cm}
 
- Ko sva dobila podatke za na začetku generirana drevesa, sva med temi izbrala boljša in na njih izvedla algoritem za iskanje lokalnih ekstremov v okolici grafa, in sicer vrsto metahevristike z imenom simulirano ohlajanje. Ta na vsakem koraku preveri stanje sosednjega grafa in se s padajočo verjetnostjo odloča, ali se bo vanj preselila, hkrati pa shranjuje najboljši rezultat do sedaj. Sosednji graf za algoritem sva ustvarila tako, da sva od prejšnjega odstranila povezavo z naključnega lista in naredila naključno novo iz njega. Po končanem algoritmu simuliranega ohlajanja je bilo treba samo še poiskati najboljšega izmed vseh rezultatov.
+ Ko sva dobila podatke za na začetku generirana drevesa, sva med temi izbrala boljša in na njih izvedla algoritem za iskanje lokalnih ekstremov v okolici grafa, in sicer vrsto metahevristike z imenom simulirano ohlajanje. Ta na vsakem koraku preveri stanje sosednjega grafa in se s padajočo verjetnostjo odloča, ali se bo vanj preselila, hkrati pa shranjuje najboljši rezultat do sedaj. Sosednji graf za algoritem sva ustvarila tako, da sva od prejšnjega odstranila povezavo z naključnega lista in naredila naključno novo iz njega, vzela pa sva po uporabi zelo razširjeno Kirkpatrickovo funkcijo za spreminjanje verjetnosti. Število korakov ohlajanje se prilagaja glede na število vozlišč. Po končanem algoritmu simuliranega ohlajanja je bilo treba samo še poiskati najboljšega izmed vseh rezultatov.
 \vspace{0.5cm}
 
 \vspace{1cm}
@@ -121,12 +121,12 @@ Za časovno optimalno računanje Wienerjevih indeksov sva najprej shranila dolž
 
 \vspace{1cm}
 
-Pri fiksnem številu vozlišč na 100 pa je časovna odvisnost glede na kmax linearna:
+Pri fiksnem številu vozlišč na 100 pa je časovna odvisnost glede na število korakov ohlajanja linearna:
 
 \begin{figure}[H]
 \centering
   \includegraphics[width=12cm]{casovna_p1_kmax.png}
-  \caption{Časovna zahtevnost pri P1 glede na kmax}
+  \caption{Časovna zahtevnost pri P1 glede na število korakov ohlajanja}
   \label{fig:p1_časovna_zaht_kmax} 
 \end{figure}
 
@@ -165,18 +165,18 @@ Primera dveh dreves, ki sva jih dobila z eksaktnim računanjem.}
 
 Ideja algoritma za iskanje drevesa na večjem številu vozlišč pri P2 je, da začneva na poti z željenim številom vozlišč in za njo posebej izračunava wienerjev indeks na časovno preprost način. Nato na vsakem koraku odstraniva povezavo iz lista in dodava novo ter glede na prejšnji graf izračunava nov indeks ter ju primerjava, nato pa star graf nadomestiva z novim. To omogoča preverjanje velikega števila grafov, kar je za problem P2 ključno.
 
-Časovna zahtevnost pri spreminjajočem se številu vozlišč $n$ pri 1.000.000 korakih:
+Časovna zahtevnost pri spreminjajočem številu vozlišč pri 1.000.000 korakih:
 
 \begin{figure}[H]
 \centering
   \includegraphics[width=12cm]{casovna_p2_n.png}
-  \caption{Časovna zahtevnost pri P2 glede na $n$}
+  \caption{Časovna zahtevnost pri P2 glede na število vozlišč}
   \label{fig:p2_časovna_zaht_n} 
 \end{figure}
 
 \vspace{1cm}
 
-Še časovna zahtevnost pri fiksnem $n = 200$ in različnem številu korakov ohlajanja:
+Še časovna zahtevnost pri fiksnem številu vozlišč $n = 200$ in različnem številu korakov ohlajanja:
 
 \begin{figure}[H]
 \centering
@@ -188,7 +188,7 @@ Ideja algoritma za iskanje drevesa na večjem številu vozlišč pri P2 je, da z
 
 \subsection{Rezultati in povzetek}
 
-Očitno je dobrih dreves precej malo, vsekakor dosti manj kot pri P1, saj je treba izvesti ogromno število korakov spreminjanja, da najdemo vsaj eno; to pa še narašča s številom vozlišč; pri 2000 namreč morda celo 1 000 000 ni dovolj. Videti je, da najin algoritem dobiva maksimume v velikosti okoli treh četrtin števila vozlišč. Težko je oceniti kvaliteto rešitev s pomočjo točnih rešitev manjših grafov, saj je koda tako časovno zahtevna, da imava rezultate le to dreves s številom vozlišč 14. Opazila sva tudi, da ne moreva dobiti iskanega drevesa za liho število vozlišč, in to ne le s poskušanjem, ampak tudi na malih grafih. Predpostavljava, da ne obstaja.
+Očitno je dobrih dreves precej malo, vsekakor dosti manj kot pri P1, saj je treba izvesti ogromno število korakov spreminjanja, da najdemo vsaj eno; to pa še narašča s številom vozlišč; pri 2000 namreč morda celo 1 000 000 ni dovolj. Videti je, da najin algoritem dobiva maksimume v velikosti okoli treh četrtin števila vozlišč. Težko je oceniti kvaliteto rešitev s pomočjo točnih rešitev manjših grafov, saj je ta koda tako časovno zahtevna, da imava točne rezultate le to dreves s številom vozlišč 14. Opazila sva tudi, da ne moreva dobiti iskanega drevesa za liho število vozlišč, in to ne le s poskušanjem, ampak tudi na malih grafih. Predpostavljava, da ne obstaja.
 
 \section{Zaključek}
 
