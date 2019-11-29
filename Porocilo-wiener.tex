@@ -73,7 +73,7 @@ Za fiksno število vozlišč $n$ in drevo $T$ naj bo $\mathscr{T}_{n+1}$ množic
 
 Za fiksno število vozlišč $n$ iščemo drevo $T$ z največjim možnim premerom, da bo veljalo; obstajata list $u$ in vozlišče $w$ iz $T$, da je list $u$, pripet na $v$ in $w$, tak, da z odstranitvijo povezave $uv$ in dodajanjem $uw$ spremenimo vrednost indeksa za 1.
 
-\subsection{Izbira programskega jezika}
+\subsection{Izbira programskega jezika in knjižnic}
 
 Za izvedbo naloge sva se odločila za programski jezik \textit{Python}, za lažje delo z grafi pa sva si pomagala s knjižnico \texttt{networkx}, tako da sva grafe lahko predstavljala kot objekte, sposodila pa sva si tudi vgrajeni funkciji računanja poti med poljubnima vozliščema grafa ter računanja premera. Uporabljala sva tudi knjižnice \texttt{numpy}, \texttt{random} in \texttt{matplotlib}, s katero so grafi tudi vizualno predstavljeni.
 
@@ -85,19 +85,23 @@ Za izvedbo naloge sva se odločila za programski jezik \textit{Python}, za lažj
 
 \subsection{Reševanje}
 
-Zaradi velike časovne zahtevnosti sva kodo ločila na eksaktno, ki je uporabna za majhne $n$ in drugo, kjer si pomagamo s tako imenovanim \textit{simuliranim ohlajanjem}.
+Zaradi velike časovne zahtevnosti sva problem ločila na kodo, ki išče točno rešitev in je uporabna za grafe z majhnim številom vozlišč, ter časovno in prostorsko bolj optimalno, ki si prizadeva najti dober približek točne rešitve za večje grafe.
 \vspace{0.5cm}
 
-V eksaktni kodi najprej dobimo generirane najkrajše poti v drevesu in seznam vsot najkrajših poti ter poračunane Wienerjeve indekse. Nato iz dreves velikosti $n$ generiramo množico dreves z dodanim listom, vrednosti njihovih Wienerjih indeksov pa shranjujemo v seznam. 
+Glavni del kode za iskanje točnih rešitev se nahaja v datoteki $p1\_manjsi\_grafi.py$. Tam so definirane funkcije za iskanje wienerjevega indeksa s pomočjo najkrajših poti med posameznima točkama drevesa, generiranje množice $\mathscr{T}_{n+1}$  z računanjem indeksov glede na indeks prvotnega drevesa ter iskanje optimumov. Rešitev pa iščemo tako, da poženemo datoteko $shranjevanje\_manjsi\_grafi\_p1.py$ ter v funkciji $zapisi\_resitve$ nastavimo za argument željeno število vozlišč drevesa, do katerega želimo imeti rezultate. Ne priporočava za n izbrati števila, večjega od 17. Pri 20 že dobimo memory error, ki bi se sicer dal odpraviti, a to nima smisla, saj nam bo algoritem za tako majhne grafe ob pravilni izbiri parametrov zelo verjetno dal točno rešitev mnogo hitreje.
+\vspace{0.5cm}
 
-\textit{ne vem, kako deluje}
+Glavni del kode za iskanje približkov na velikih grafih se nahaja v datoteki $p1\_vecji\_grafi.py$, koda pa se požene iz datoteke $shranjevanje\_vecji\_grafi\_p1.py$, tako da v funkciji $shrani\_resitve$ za argumente nastavimo seznam s števili, ki predstavljajo velikosti grafov, za katere želimo rezultate, število korakov izvedbe simuliranega ohlajanja za vsak graf, število dreves za odstranitev iz prvotnega seznama ter število dreves z istim številom vozlišč za prvotni seznam, iz katerega bomo naredili prej omenjeni ožji izbor za ohlajanje.
+\vspace{0.5cm}
 
-%Na koncu ustvarimo 2 prazna seznama, v enega shranjujemo drevesa, ki so vrnila maksimalno, v drugega pa tista, ki so vrnila %maksimalno vrednosti moči množic Wienerjevega indeksa, kar nas je pri tem problemu zanimalo.
+Za začetek reševanja tega problema sva potrebovala ustrezne grafe. Ker naključna drevesa navadno ne bodo dovolj dobra, sva generirala nekaj boljših s pomočjo modificiranega Kruskalovega algoritma tako, da sva vzela pot velikosti nekje med 80 in 95\% števila vseh vozlišč in nato naključno dodajala povezave na pot tako, da je nastalo povezano drevo, kar se je izkazalo za zelo učinkovito.
+\vspace{0.5cm}
 
-%vsa drevesa z enim vozliščem več (dodan list)
-%iščemo drevo z n vozlišči, da bo za n+1 najmanj/največ različnih možnih vrednosti wienerjevega indeksa
+Za časovno optimalno računanje Wienerjevih indeksov sva najprej shranila dolžine najkrajših poti med vsakima točkama grafa. Tako sva potem lahko izračunala indeks vsakega posameznega novega drevesa v linearnem času; potrebovala sva namreč le vsoto poti iz vozlišča, ki sva mu dodala list, vsoto vseh poti ter število vozlišč; vse te podatke pa sva že imela.
+\vspace{0.5cm}
 
-\textit{Opis kode s simuliranih ohlajanjem}
+ Ko sva dobila podatke za na začetku generirana drevesa, sva med temi izbrala boljša in na njih izvedla algoritem za iskanje lokalnih ekstremov v okolici grafa, in sicer vrsto metahevristike z imenom simulirano ohlajanje. Ta na vsakem koraku preveri stanje sosednjega grafa in se s padajočo verjetnostjo odloča, ali se bo vanj preselila, hkrati pa shranjuje najboljši rezultat do sedaj. Sosednji graf za algoritem sva ustvarila tako, da sva od prejšnjega odstranila povezavo z naključnega lista in naredila naključno novo iz njega. Po končanem algoritmu simuliranega ohlajanja je bilo treba samo še poiskati najboljšega izmed vseh rezultatov.
+\vspace{0.5cm}
 
 \vspace{1cm}
 
@@ -110,31 +114,28 @@ V eksaktni kodi najprej dobimo generirane najkrajše poti v drevesu in seznam vs
 \begin{figure}[H]
 \centering
   \includegraphics[width=12cm]{casovna_p1_n.png}
-  \caption{Časovna zahtevnost glede na eksperimente pri P1 glede na $n$}
+  \caption{Časovna zahtevnost pri P1 glede na $n$}
   \label{fig:p1_časovna_zaht_n} 
 \end{figure}
 
 
 \vspace{1cm}
 
-Pri fiksnem številu vozlišč na 100, pa je časovna odvisnost glede na kmax linearna:
+Pri fiksnem številu vozlišč na 100 pa je časovna odvisnost glede na kmax linearna:
 
 \begin{figure}[H]
 \centering
   \includegraphics[width=12cm]{casovna_p1_kmax.png}
-  \caption{Časovna zahtevnost glede na eksperimente pri P1 glede na kmax}
+  \caption{Časovna zahtevnost pri P1 glede na kmax}
   \label{fig:p1_časovna_zaht_kmax} 
 \end{figure}
 
 \vspace{1cm}
 
 
-
-\itshape{ Načrt zdaj je pomikati se po množici ustreznih grafov tako, da najprej narediva par poljubnih dreves na $n$ vozliščih s premerom $n - 2$ in lastnost preveriva za njih, nato vzameva premer $n - 3$ in tako dalje, morda pa tudi na vsakem izmed teh dreves izvesti kakšno metahevristiko ali kaj podobnega. Skrbi naju, da po takšnem postopku dolgo časa sploh ne bi našla grafa z željeno lastnostjo, zato bova morala dobro določiti število izbranih grafov za primerjanje in mogoče zbrati drugačne načine za iskanje.
-}
-
 \subsection{Rezultati in povzetek}
 
+Meniva, da sva našla globalni minimum za poljubno število vozlišč, da je enak 2 in je dosežen pri zvezdah. Našla pa sva še en minimum za soda števila vozlišč n, sestavljen iz dveh zvezd velikosti n/2, povezanih s središčema. Kar se tiče maksimumov, jih je sodeč po točnih rešitvah na manjših grafih in uspešnostjo algoritmov na večjih precej veliko in so običajno po velikosti malo pod številom vozlišč ter največ enaki. Njihovo obliko si lahko ogledamo v shranjenih slikah, vidimo pa, da imajo relativno velik premer.
 
 \pagebreak
 
@@ -142,11 +143,7 @@ Pri fiksnem številu vozlišč na 100, pa je časovna odvisnost glede na kmax li
 
 \subsection{Reševanje}
 
-\normalfont{Za manjše grafe, kjer je možno eksaktno računanje, sva napisala funkcijo za generiranje vseh izomorfnih dreves na $n$ vozliščih ter funkcije, ki najprej iz vseh poberejo tista z iskano lastnostjo, to je spremembo Wienerjevega indeksa za 1 ob odstranitvi ene in dodajanju nove povezave kot v opisu problema, nato pa izmed teh vrne tisto drevo z največjim premerom, če tako sploh obstaja. To je točna rešitev problema, a je časovno zahtevna ne le generacija grafov, temveč tudi računanje premera. Zato sva za večje $n$ tudi tukaj napisala novo kodo.
-
-
-
-
+\normalfont{Za manjše grafe, kjer je možno eksaktno računanje, sva napisala funkcijo za generiranje vseh izomorfnih dreves na $n$ vozliščih ter funkcije, ki najprej iz vseh poberejo tista z iskano lastnostjo, to je spremembo Wienerjevega indeksa za 1 ob odstranitvi ene in dodajanju nove povezave kot v opisu problema, nato pa izmed teh vrnejo tisto drevo z največjim premerom, če tako sploh obstaja. To je točna rešitev problema, a je časovno zahtevna ne le generacija grafov, temveč tudi računanje premera. Zato sva za večje $n$ tudi tukaj napisala novo kodo.
 
 Primera dveh dreves, ki sva jih dobila z eksaktnim računanjem.}
 
@@ -166,12 +163,14 @@ Primera dveh dreves, ki sva jih dobila z eksaktnim računanjem.}
 
 \vspace{1cm}
 
+Ideja algoritma za iskanje drevesa na večjem številu vozlišč pri P2 je, da začneva na poti z željenim številom vozlišč in za njo posebej izračunava wienerjev indeks na časovno preprost način. Nato na vsakem koraku odstraniva povezavo iz lista in dodava novo ter glede na prejšnji graf izračunava nov indeks ter ju primerjava, nato pa star graf nadomestiva z novim. To omogoča preverjanje velikega števila grafov, kar je za problem P2 ključno.
+
 Časovna zahtevnost pri spreminjajočem se številu vozlišč $n$ pri 1.000.000 korakih:
 
 \begin{figure}[H]
 \centering
   \includegraphics[width=12cm]{casovna_p2_n.png}
-  \caption{Časovna zahtevnost glede na eksperimente pri P2 glede na $n$}
+  \caption{Časovna zahtevnost pri P2 glede na $n$}
   \label{fig:p2_časovna_zaht_n} 
 \end{figure}
 
@@ -182,45 +181,16 @@ Primera dveh dreves, ki sva jih dobila z eksaktnim računanjem.}
 \begin{figure}[H]
 \centering
   \includegraphics[width=12cm]{casovna_p2_korak.png}
-  \caption{Časovna zahtevnost glede na eksperimente pri P2 glede na št. korakov ohlajanja}
+  \caption{Časovna zahtevnost pri P2 glede na število korakov ohlajanja}
   \label{fig:p2_časovna_zaht_korak} 
 \end{figure}
 
 
-
 \subsection{Rezultati in povzetek}
 
+Očitno je dobrih dreves precej malo, vsekakor dosti manj kot pri P1, saj je treba izvesti ogromno število korakov spreminjanja, da najdemo vsaj eno; to pa še narašča s številom vozlišč; pri 2000 namreč morda celo 1 000 000 ni dovolj. Videti je, da najin algoritem dobiva maksimume v velikosti okoli treh četrtin števila vozlišč. Težko je oceniti kvaliteto rešitev s pomočjo točnih rešitev manjših grafov, saj je koda tako časovno zahtevna, da imava rezultate le to dreves s številom vozlišč 14. Opazila sva tudi, da ne moreva dobiti iskanega drevesa za liho število vozlišč, in to ne le s poskušanjem, ampak tudi na malih grafih. Predpostavljava, da ne obstaja.
 
+\section{Zaključek}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\itshape{Za začetek sva potrebovala ustrezne grafe. Ker je izomorfnih dreves na $n$ vozliščih preveč za preverjanje vseh, sva generirala nekaj naključnih s pomočjo Kruskalovega algoritma. Poskusila sva tudi z vgrajenimi funkcijami, a so se izkazale za neuporabne, saj so vračale med seboj preveč podobna drevesa. \newline
-
-Za časovno optimalno računanje Wienerjevih indeksov sva najprej shranila dolžine najkrajših poti med vsakima točkama grafa. Tako sva potem lahko izračunala indeks vsakega posameznega novega drevesa v linearnem času; potrebovala sva namreč le vsoto poti iz vozlišča, ki sva mu dodala list, vsoto vseh poti ter število vozlišč; vse te podatke pa sva že imela. \newline
-
- Ko sva dobila podatke za na začetku generirana drevesa, sva na vsakem izvedla algoritem za iskanje lokalnih ekstremov v okolici grafa, in sicer vrsto metahevristike z angleškim imenom \textit{simulated annealing}. Ta na vsakem koraku preveri stanje sosednjega grafa in se s padajočo verjetnostjo odloča, ali se bo vanj preselila, hkrati pa shranjuje najboljši rezultat do sedaj. Imela sva težave z definiranjem sosednjega drevesa, zato nameravava preiskusiti par načinov in izbrati ugodnega. Pri prvotnem sva odstranila naključno povezavo, nato pa povezave dodajala in odstranjala, dokler nisva dobila povezanega drevesa, kar se ni izkazalo za učinkovit postopek. \newline
-
-Po končanem algoritmu \textit{simulated annealing} je bilo treba samo še preveriti najboljšega izmed vseh rezultatov, ki jih je podala omenjena metahevristika. Razmišljala sva, da bi na začetku generirala večje število grafov in zadnji algoritem izvedla le na tistih, ki dajejo boljše rezultate, kar bi bilo hitreje. To bo dobro natanko takrat, ko bodo imeli sosednji grafi podobno moč množice $W(\mathscr{T}_{n+1})$, torej želiva to doseči pri novem definiranju sosedov. Poskusila bova z menjavo povezave pri listih, tako kot je to opisano v problemu P2. Nameravava poskusiti tudi na drugačen način, in sicer razmišljava o implementaciji genetskega algoritma. Za to morava razmisliti, kako primerno križati ali kako drugače modificirati ugodni drevesi. Ko bova optimizirala postopke in dobila zadostno število iskanih dreves, se bova morala spomniti še, kako jih primerjati. Za prvih par naravnih števil nameravava tudi preveriti točno rešitev.
-
-\subsection{P2}
-
-
-\subsection{Zaključek}
-
-Morala bova še implementirati zgoraj omenjene načrte. Sproti bova videla, kaj je potrebno spremeniti, česa se bova znebila in kaj spremenila ali dodala. Poleg iskanja lokalnih optimumov na večjih grafih bova pogledala globalne na manjših ter poskušala sklepati na lastnostih, če se bo pokazal vzorec. Če bo šlo, bova priredila algoritme izdelave prvotnih dreves za testiranje glede na rezultate, ki sva jih dobila na prejšnjih testiranjih.}
 
 \end{document}

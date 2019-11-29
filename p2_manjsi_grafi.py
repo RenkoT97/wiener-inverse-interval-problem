@@ -1,11 +1,9 @@
 import networkx as nx
 import numpy as np
-#import matplotlib as mpl
+import matplotlib as mpl
 import time
 
 start_time = time.time()
-
-n = 8
 
 def vsa_izomorfna_drevesa(n):
     drevesa_reda_n = nx.nonisomorphic_trees(n, create='graph')
@@ -41,18 +39,19 @@ def poisci_drevo_z_najvecjim_premerom(drevesa):
         return D, diametri[m]
     else:
         print("D ne obstaja")
-        return None
 
 def slika(drevo, i, diam):
-    #nx.draw(drevo,node_size=4)
-    #mpl.pyplot.savefig('drevo{}diam{}.png'.format(i, diam), format = "PNG")
-    #mpl.pyplot.close()
-    return None
+    nx.draw(drevo,node_size=4)
+    mpl.pyplot.savefig('drevo{}diam{}.png'.format(i, diam), format = "PNG")
+    mpl.pyplot.close()
 
+'''
+n = 8
 sez = vsa_izomorfna_drevesa(n)
 drevesa = ustrezna_drevesa(sez)
 iskano_drevo, diameter = poisci_drevo_z_najvecjim_premerom(drevesa)
 slika(iskano_drevo, n, diameter)
 print(diameter)
+'''
 
 print("%s seconds" % (time.time() - start_time))

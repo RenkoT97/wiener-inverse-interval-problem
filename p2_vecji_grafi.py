@@ -8,7 +8,7 @@ start_time = time.time()
 
 def prvotni_graf(n):
     graf = nx.Graph()
-    nx.add_path(graf, [i for i in range(n)])
+    nx.add_path(graf, list(range(n)))
     return graf
 
 def slika(drevo, i, diam):
@@ -16,7 +16,6 @@ def slika(drevo, i, diam):
     mpl.pyplot.savefig('drevo{}diam{}.png'.format(i, diam), format = "PNG")
     mpl.pyplot.close()
     print("Drevo je najdeno.")
-    return None
 
 def seznam_sosedov(graf):
     return[[i, list(graf.neighbors(i))] for i in graf]
@@ -25,7 +24,7 @@ def listi(drevo):
     return  [l[0] for l in seznam_sosedov(drevo) if len(l[1])==1]
 
 def wiener_poti(n):
-    sez = [sum(i for i in range(n))]
+    sez = [sum(range(n))]
     k = n-1
     for i in range(1,n):
         sez.append(sez[i-1]-k)
@@ -58,9 +57,7 @@ def iskanje(k, n):
             return slika(graf, len(graf), nx.diameter(graf))
         w_star = w_nov
     print("Ne najdem grafa.")
-    return None
 
-
-iskanje(1000000, 400)
+#iskanje(1000000, 400)
 
 print("%s seconds" % (time.time() - start_time))

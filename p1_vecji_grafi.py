@@ -6,12 +6,12 @@ import math
 
 def prilagojeno_drevo(n):
     graf = nx.Graph()
-    graf.add_nodes_from([i for i in range(n)])
+    graf.add_nodes_from(list(range(n)))
     st = rd.randint(8 * n // 10, 95 * n // 100)
-    nx.add_path(graf, [i for i in range(st)])
-    sez = [i for i in range(st,n)]
+    nx.add_path(graf, list(range(st)))
+    sez = list(range(st,n))
     rd.shuffle(sez)
-    sez2 = [i for i in range(st)]
+    sez2 = list(range(st))
     while sez:
         a = sez.pop()
         b = rd.choice(sez2)
@@ -34,7 +34,6 @@ def moc_mnozice_novih_indeksov(graf):
 def narisi(drevo):
     slika = nx.draw(drevo,node_size=4)
     mpl.pyplot.show()
-    return None
 
 def seznam_sosedov(graf):
     return[[i, list(graf.neighbors(i))] for i in graf]
@@ -55,8 +54,7 @@ def sosed(drevo):
     return novo_drevo, I
 
 def P(e,en,t):
-    #po Kirkpatricku
-    if en < e:
+    if en > e:
         return 1
     else:
         return math.e ** ((e - en) / t)
@@ -92,13 +90,10 @@ def ozji_izbor_dreves(n, k, st_dreves):
 
 def maximum(drevesa, kmax, emax, zacetna_temperatura = 100):
     sez_maximumov = [simulirano_ohlajanje(i, kmax, emax, zacetna_temperatura) for i in drevesa]
-    print(sez_maximumov) #test
     sez_moci = [el[1] for el in sez_maximumov]
-    print(sez_moci) #test
     return sez_maximumov[np.argmax(sez_moci)]
 
 def slika(drevo, i, wm):
     nx.draw(drevo, node_size=4)
     mpl.pyplot.savefig('drevo{}max{}.png'.format(i,wm), format = "PNG")
     mpl.pyplot.close()
-    return None

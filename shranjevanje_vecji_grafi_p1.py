@@ -12,8 +12,7 @@ def shrani_resitve(velikosti_grafov, kmax, st_dreves_za_odstranitev, st_dreves_z
         max_drevo, max_moc_mnozice = vg.maximum(drevesa, kmax, i)
         vg.slika(max_drevo, i, max_moc_mnozice)
         print(max_moc_mnozice)
-    return None
 
-shrani_resitve([80], 20, 48, 50)
+#shrani_resitve([80], 20, 48, 50)
 
 print("%s seconds" % (time.time() - start_time))
